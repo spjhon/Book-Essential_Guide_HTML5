@@ -1,0 +1,109 @@
+<html>
+  <head>
+    <title>Bouncing Video</title>
+    <style>
+      #videoE {
+        position: absolute;
+        display: none;
+        z-index: 1;
+      } /*Set up for the video to be on top of the image. Start with no display.*/
+      #con {
+        position: absolute;
+      } /*Set up positioning for the div container.*/
+    </style>
+    <script type="text/javascript">
+      let rightEdge; //Right edge of the imaginary box.
+      let leftEdge; //Left edge.
+      let topEdge; //Top edge.
+      let botEdge; //Bottom edge.
+      let ballx = 250; //Initial x coordinate for bouncing container/video.
+      let bally = 260; //Initial y coordinate.
+      let v; //Will hold reference to video.
+      let c; //Will hold reference to the div, which I call the container.
+      let img; //Will hold reference to the image.
+      let iWidth; //Will hold the width of the image.
+      let iHeight; //Will hold the height of the image.
+      let vWidth; //Will hold the width of the video.
+      let vHeight; //Will hold the height of the video.
+      let ballvx = 1; //Initial change in horizontal coordinate.
+      let ballvy = 1; //Initial change in vertical coordinate.
+
+      function init() {
+        //Header for the init function.
+        v = document.getElementById("videoE"); //Get pointers/references to the video object.
+        c = document.getElementById("con"); //The div object that serves as a container for the video.
+        img = document.getElementById("AandF"); //The image that fills the div object.
+        iwidth = img.clientWidth; //Set the width of the image.
+        iheight = img.clientHeight; //Set the height of the image.
+        vwidth = v.videoWidth; //Set the width of the video.
+        vheight = v.videoHeight; //Set the height of the video.
+        leftEdge = 5; //Set the leftEdge to be a little away from the actual edge.
+        rightEdge = leftEdge + iwidth - 0.6 * vwidth; //Set the rightEdge so that the bounce happens quickly.
+        topEdge = 5; //Set the topEdge to be a little away from the actual edge.
+        botEdge = topEdge + iheight - 0.6 * vheight; //Set the botEdge so that the bounce happens quickly.
+ }
+
+ function startV() {
+
+    //Header for startV.
+    v.play(); //Start the video playing.
+        v.style.display = "block"; //Make the video visible.
+        c.style.top = bally + "px"; //Set the initial x coordinate.
+        c.style.left = ballx + "px"; //Set the y coordinate.
+
+        v.addEventListener("ended", function () {
+            //Set up event handling for when the video ends, using the anonymous function.
+            v.currentTime = 0; //Set currentTime to 0, that is, the start.
+            v.play(); //Start the video playing.
+          } //Close the definition of the anonymous function.
+        ); 
+        moveBall(); //Call moveball.
+        setInterval(moveBall, 100); //Use the setInterval function for repeated calls to moveball.
+     }
+    
+      function moveBall() {
+        moveAndCheck(); //Invokes moveAndCheck.
+      } 
+
+      function moveAndCheck() {
+        //Header for moveAndCheck.
+        let nballx = ballx + ballvx; //Calculate the possible next x value for the moving object.
+        let nbally = bally + ballvy; //Calculate the y value. Now start to do the checks against each edge.
+
+        if (nballx < leftEdge) {
+          ballvx = -ballvx; //Reverse the sign of ballvx.
+          nballx = leftEdge; //Set the next x position to be the leftEdge.
+        }
+        if (nballx > rightEdge) {
+          nballx = rightEdge; //Set the next x to rightEdge.
+          ballvx = -ballvx; //Reverse sign of ballvx.
+        }
+        if (nbally > botEdge) {
+          nbally = botEdge; //Set the next y position to botEdge.
+          ballvy = -ballvy; //Reverse the sign of ballvy.
+        }
+        if (nbally < topEdge) {
+          nbally = topEdge; //Set the next position to topEdge.
+          ballvy = -ballvy; //Reverse the sign of ballvy.
+        }
+
+        ballx = nballx; //Now set ballx.
+        bally = nbally; //Set bally.
+        c.style.top = bally + "px"; //Set the top attribute using px.
+        c.style.left = ballx + "px"; //Set the left attribute using px.
+      }
+
+    </script>
+  </head>
+  <body onLoad="init();">
+    <image id="AandF" src="./mountain.webp" width="auto" height="100%" />
+
+    <div id="con" width="300">
+      <video controls width="300" id="videoE">
+        <source src="./bicycle.mp4" type="video/mp4" />
+        Sorry, your browser doesn't support embedded videos.
+      </video>
+    </div>
+    <button onclick="startV()">Click to start</button>
+  </body>
+</html>
