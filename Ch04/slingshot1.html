@@ -3,27 +3,29 @@
     <title>Slingshot pulling back</title>
    
     <script type="text/javascript">
-	var cwidth = 1200;
-	var cheight = 600;
-	var ctx;
-	var canvas1;
-	var everything = [];
-	var tid;
-	var startrockx = 100;
-	var startrocky = 240;
-	var ballx = startrockx;
-	var bally = startrocky;
-	var ballrad = 10;
-	var ballradsq = ballrad*ballrad;
-	var inmotion = false;
-	var horvelocity;
-	var verticalvel1;
-	var verticalvel2;
-	var gravity = 2;  //arbitrary value. It produces nice arcs.
-	var chicken = new Image();
+	let cwidth = 1200;
+	let cheight = 600;
+	let ctx;
+	let canvas1;
+	let everything = [];
+	let tid;
+	let startrockx = 100;
+	let startrocky = 240;
+	let ballx = startrockx;
+	let bally = startrocky;
+	let ballrad = 10;
+	let ballradsq = ballrad*ballrad;
+	let inmotion = false;
+	let horvelocity;
+	let verticalvel1;
+	let verticalvel2;
+	let gravity = 2;  //arbitrary value. It produces nice arcs.
+	let chicken = new Image();
 	chicken.src = "chicken.jpg";
-	var feathers = new Image();
+	let feathers = new Image();
 	feathers.src = "feathers.gif";
+
+
 //Create 'objects', each with a draw method for placement on the canvas	
 function Sling(bx,by,s1x,s1y,s2x,s2y,s3x,s3y,stylestring) {
 	this.bx = bx;
@@ -52,7 +54,7 @@ function drawsling() {
 	ctx.lineTo(this.s3x,this.s3y);
 	ctx.stroke();
 }
-function movesling(dx,dy) {
+function movesling (dx,dy) {
 	this.bx +=dx;
 	this.by +=dy;
 	this.s1x +=dx;
@@ -63,11 +65,10 @@ function movesling(dx,dy) {
 	this.s3y +=dy;
 }
 
-var mysling= new Sling(startrockx,startrocky,startrockx+80,startrocky-10,startrockx+80,
-					   startrocky+10,startrockx+70,startrocky+180,"rgb(120,20,10)");
+let mysling= new Sling(startrockx,startrocky,startrockx+80,startrocky-10,startrockx+80,startrocky+10,startrockx+70,startrocky+180,"rgb(120,20,10)");
  
 	
-function Ball(sx,sy,rad,stylestring) {
+function Ball(sx,sy,rad,stylestring) { //Este es un constructor, por eso el this
   this.sx = sx;
   this.sy = sy;
   this.rad = rad;
@@ -76,7 +77,7 @@ function Ball(sx,sy,rad,stylestring) {
   this.fillstyle = stylestring;
 }
 
-function drawball() {
+function drawball() { //Este es un constructor, por eso el this
 	ctx.fillStyle=this.fillstyle;
 	ctx.beginPath();
 	//ctx.fillStyle= rgb(0,0,0);
@@ -89,7 +90,7 @@ function moveball(dx,dy) {
 	this.sy +=dy;
 }
 
-var cball = new Ball(startrockx,startrocky,ballrad,"rgb(250,0,0)");
+let cball = new Ball(startrockx,startrocky,ballrad,"rgb(250,0,0)");
 
 
 function Myrectangle(sx,sy,swidth,sheight,stylestring) {
@@ -125,8 +126,8 @@ function drawAnImage() {
 	ctx.drawImage(this.img,this.sx,this.sy,this.swidth,this.sheight);
 	
 }
-var target = new Picture(700,210,209,179,chicken);
-var ground = new Myrectangle(0,370,1200,30,"rgb(10,250,0)");
+let target = new Picture(700,210,209,179,chicken);
+let ground = new Myrectangle(0,370,1200,30,"rgb(10,250,0)");
 
 everything.push(target);
 everything.push(ground);
@@ -146,8 +147,8 @@ function init(){
   drawall();  
 } 
 function findball(ev) {
-	var mx;
-	var my;
+	let mx;
+	let my;
 	if ( ev.layerX ||  ev.layerX == 0) { // Firefox, Chrome
 	
    			mx= ev.layerX;
@@ -170,8 +171,8 @@ function distsq(x1,y1,x2,y2) {
 }
 //for dragging of ball and modification of mysling
 function moveit(ev) {
-	var mx;
-	var my;
+	let mx;
+	let my;
 	if (inmotion) {
 		
 	if ( ev.layerX ||  ev.layerX == 0) { // Firefox
@@ -197,9 +198,9 @@ function finish(ev) {
 		inmotion = false;
 //want initial velocity to increase with length, make it the square for convenience
 //the 700 is arbitrary. It makes a nice arc!
-	 var outofcannon = distsq(mysling.bx,mysling.by,mysling.s1x,mysling.s1y)/700;
+	 let outofcannon = distsq(mysling.bx,mysling.by,mysling.s1x,mysling.s1y)/700;
 //use angle based on line interval bx,by to s1x,s1y, the upper arm of sling
-  var angleradians = -Math.atan2(mysling.s1y-mysling.by,mysling.s1x-mysling.bx);
+  let angleradians = -Math.atan2(mysling.s1y-mysling.by,mysling.s1x-mysling.bx);
   horvelocity =  outofcannon*Math.cos(angleradians);
   verticalvel1 = - outofcannon*Math.sin(angleradians);
 	drawall();
@@ -210,7 +211,7 @@ function finish(ev) {
 function drawall() {
 //drawall erases the whole canvas and then draws everything in everything array
 	ctx.clearRect(0,0,cwidth,cheight);
-	var i;
+	let i;
 	for (i=0;i<everything.length;i++) {
 		everything[i].draw();
 	}
@@ -218,14 +219,14 @@ function drawall() {
 
 function change() {
 //this creates the motion of the ball from the slingshot to either the target or the ground
-	var dx = horvelocity;
+	let dx = horvelocity;
 	verticalvel2 = verticalvel1 + gravity;
-	var dy = (verticalvel1 + verticalvel2)*.5;
+	let dy = (verticalvel1 + verticalvel2)*.5;
 	verticalvel1 = verticalvel2;
 	cball.moveit(dx,dy);
 	//check for hitting target
-	var bx = cball.sx;
-	var by = cball.sy;
+	let bx = cball.sx;
+	let by = cball.sy;
 	//check for inside of target
 // adjust boundaries by 40 to make the hit area smaller
 	if ((bx>=target.sx+40)&&(bx<=(target.sx+target.swidth-40))&&

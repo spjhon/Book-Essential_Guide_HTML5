@@ -10,17 +10,17 @@
 }
 	</style>
     <script type="text/javascript">
-	var cwidth = 600;
-	var cheight = 400;
-	var ctx;
-	var everything = [];
-	var tid;
-	var horvelocity;
-	var verticalvel1;
-	var verticalvel2;
-	var gravity = 2;  //arbitrary. Makes for a nice arc.
-	var iballx = 20;
-	var ibally = 300;
+	let cwidth = 600;
+	let cheight = 400;
+	let ctx;
+	let everything = [];
+	let tid;
+	let horvelocity;
+	let verticalvel1;
+	let verticalvel2;
+	let gravity = 2;  //arbitrary. Makes for a nice arc.
+	let iballx = 20;
+	let ibally = 290;
 //define Ball, Picture, myrectangles, to be objects on canvas. Each has a draw method.
 //Each object painted on the canvas corresponds to an element in everything array.	
 	
@@ -46,7 +46,7 @@ function moveball(dx,dy) {
 	this.sy +=dy;
 }
 
-var cball = new Ball(iballx,ibally,10,"rgb(250,0,0)");
+let cball = new Ball(iballx,ibally,10,"rgb(250,0,0)");
 
 
 function Myrectangle(sx,sy,swidth,sheight,stylestring) {
@@ -69,8 +69,8 @@ function moverect(dx,dy) {
    this.sy += dy;
 }
 
-var target = new Myrectangle(300,100,80,200,"rgb(0,5,90)");
-var ground = new Myrectangle(0,300,600,30,"rgb(10,250,0)");
+let target = new Myrectangle(300,100,80,200,"rgb(0,5,90)");
+let ground = new Myrectangle(0,300,600,30,"rgb(10,250,0)");
 everything.push(target);
 everything.push(ground);
 everything.push(cball);
@@ -94,21 +94,21 @@ function fire() {
 function drawall() {
 	 
 	ctx.clearRect(0,0,cwidth,cheight);
-	var i;
+	let i;
 	for (i=0;i<everything.length;i++) {
 		everything[i].draw();
 	}
 	
 }
 function change() {
-	var dx = horvelocity;
+	let dx = horvelocity;
 	verticalvel2 = verticalvel1 + gravity;
-	var dy = (verticalvel1 + verticalvel2)*.5;
+	let dy = (verticalvel1 + verticalvel2)*.5;
 	verticalvel1 = verticalvel2;
 	cball.moveit(dx,dy);
 	//check for hitting target
-	var bx = cball.sx;
-	var by = cball.sy;
+	let bx = cball.sx;
+	let by = cball.sy;
 	if ((bx>=target.sx)&&(bx<=(target.sx+target.swidth))&&
 	(by>=target.sy)&&(by<=(target.sy+target.sheight))) {
 		clearInterval(tid);
