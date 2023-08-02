@@ -28,9 +28,9 @@ function Ball(sx,sy,rad,stylestring) {
   this.sx = sx;
   this.sy = sy;
   this.rad = rad;
+  this.fillstyle = stylestring;
   this.draw = drawball;
   this.moveit = moveball;
-  this.fillstyle = stylestring;
 }
 
 function drawball() {
@@ -75,21 +75,12 @@ everything.push(target);
 everything.push(ground);
 everything.push(cball);
 
+
 function init(){
    ctx = document.getElementById('canvas').getContext('2d'); 
   
   drawall();  
 } 
-function fire() {
-  cball.sx = iballx;
-  cball.sy = ibally;
-  horvelocity =  Number(document.f.hv.value);
-  verticalvel1 = Number(document.f.vv.value);
- 
-	drawall();
-	tid = setInterval(change,100);
-	return false;
-}
 
 function drawall() {
 	 
@@ -100,10 +91,25 @@ function drawall() {
 	}
 	
 }
+function fire() {
+	console.clear()
+  cball.sx = iballx;
+  cball.sy = ibally;
+  horvelocity =  Number(document.f.hv.value);
+  verticalvel1 = Number(document.f.vv.value);
+ 
+	drawall();
+	tid = setInterval(change,100);
+	return false;
+}
+
+
 function change() {
 	let dx = horvelocity;
 	verticalvel2 = verticalvel1 + gravity;
 	let dy = (verticalvel1 + verticalvel2)*.5;
+	console.log(dy)
+	
 	verticalvel1 = verticalvel2;
 	cball.moveit(dx,dy);
 	//check for hitting target
@@ -128,6 +134,9 @@ Your browser doesn't support the HTML5 element canvas.
 </canvas>  
 <br/>
 <form name="f" id="f" onSubmit="return fire();">
+<!--The return statement is necessary in this context because it controls whether the default form submission behavior 
+	will happen or not. If the fire() function returns false, the default form submission will be prevented, and the browser 
+	will not refresh the page or perform any default form submission actions.-->
 Set velocities and fire cannonball. <br/> 
 Horizontal displacement <input name="hv" id="hv" value="10" type="number" min="-100" max="100" /> 
 <br>

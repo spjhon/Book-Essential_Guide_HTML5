@@ -10,29 +10,29 @@
 }
 	</style>
     <script type="text/javascript">
-	var cwidth = 600;
-	var cheight = 400;
-	var ctx;
-	var everything = [];
-	var tid;
-	var outofcannon;
-	var horvelocity;
-	var verticalvel1;
-	var verticalvel2;
-	var gravity = 2;  //arbitrary. Makes for nice arc.
-	var cannonx = 10;
-	var cannony = 280;
-	var cannonlength = 200;
-	var cannonht = 20;
-	var ballrad = 10;
-	var targetx = 500;
-	var targety = 50;
-	var targetw = 85;
-	var targeth = 280;
-	var htargetx = 450;
-	var htargety = 220;
-	var htargetw = 355;
-	var htargeth = 96;
+	let cwidth = 600;
+	let cheight = 400;
+	let ctx;
+	let everything = [];
+	let tid;
+	let outofcannon;
+	let horvelocity;
+	let verticalvel1;
+	let verticalvel2;
+	let gravity = 2;  //arbitrary. Makes for nice arc.
+	let cannonx = 10;
+	let cannony = 280;
+	let cannonlength = 200;
+	let cannonht = 20;
+	let ballrad = 10;
+	let targetx = 500;
+	let targety = 50;
+	let targetw = 85;
+	let targeth = 280;
+	let htargetx = 450;
+	let htargety = 220;
+	let htargetw = 355;
+	let htargeth = 96;
 //define Ball, Picture, Myrectangles, to be objects on canvas. Each has a draw method.
 //Each object painted on the canvas corresponds to an element in everything array.
 //each element is an array, with some of the values used to perform a rotation.
@@ -41,9 +41,10 @@ function Ball(sx,sy,rad,stylestring) {
   this.sx = sx;
   this.sy = sy;
   this.rad = rad;
+  this.fillstyle = stylestring;
   this.draw = drawball;
   this.moveit = moveball;
-  this.fillstyle = stylestring;
+  
 }
 
 function drawball() {
@@ -59,7 +60,7 @@ function moveball(dx,dy) {
 	this.sy +=dy;
 }
 
-var cball = new Ball(cannonx+cannonlength,cannony+cannonht*.5,ballrad,"rgb(250,0,0)");
+let cball = new Ball(cannonx+cannonlength,cannony+cannonht*.5,ballrad,"rgb(250,0,0)");
 
 
 function Myrectangle(sx,sy,swidth,sheight,stylestring) {
@@ -80,7 +81,7 @@ function drawrects() {
 
 
 function Picture (sx,sy,swidth,sheight,filen) {
-	var imga = new Image();
+	let imga = new Image();
 	imga.src=filen;
 	this.sx = sx;
 	this.sy = sy;
@@ -90,47 +91,40 @@ function Picture (sx,sy,swidth,sheight,filen) {
 	this.draw = drawAnImage;
 	this.moveit = moveball;
 }
+
+
 function drawAnImage() {
 	ctx.drawImage(this.img,this.sx,this.sy,this.swidth,this.sheight);
 	
 }
-var target = new Picture(targetx,targety,targetw,targeth,"hill.jpg");
-var htarget = new Picture(htargetx, htargety, htargetw, htargeth, "plateau.jpg");
-var ground = new Myrectangle(0,300,600,30,"rgb(10,250,0)");
-var cannon = new Myrectangle(cannonx,cannony,cannonlength,cannonht,"rgb(40,40,0)");
-var targetindex = everything.length;
+
+let target = new Picture(targetx,targety,targetw,targeth,"hill.jpg");
+let htarget = new Picture(htargetx, htargety, htargetw, htargeth, "plateau.jpg");
+let ground = new Myrectangle(0,300,600,30,"rgb(10,250,0)");
+let cannon = new Myrectangle(cannonx,cannony,cannonlength,cannonht,"rgb(40,40,0)");
+let targetindex = everything.length;
 everything.push([target,false]);
 everything.push([ground,false]);
-var ballindex = everything.length;
+let ballindex = everything.length;
 everything.push([cball,false]);
-var cannonindex = everything.length;  //save to use later
-everything.push([cannon,true,0,cannonx,cannony+cannonht*.5]);  // will set rotation later
+let cannonindex = everything.length;  //save to use later
+everything.push([cannon,true,0,cannonx,cannony+cannonht*.5]);  // will set rotation later, its true because the cannon its the only one that rotates
+
+
 
 function init(){
    ctx = document.getElementById('canvas').getContext('2d'); 
   
   drawall();  
 } 
-function fire() {
-  
-  var angle = Number(document.f.ang.value);
-  var outofcannon = Number(document.f.vo.value);
-  var angleradians = angle*Math.PI/180;
-  horvelocity =  outofcannon*Math.cos(angleradians);
-  verticalvel1 = - outofcannon*Math.sin(angleradians);
-  everything[cannonindex][2]= - angleradians;
-  cball.sx = cannonx + cannonlength*Math.cos(angleradians);
-  cball.sy = cannony+cannonht*.5 - cannonlength*Math.sin(angleradians);
-	drawall();
-	tid = setInterval(change,100);
-	return false;
-}
 
 function drawall() {
 	ctx.clearRect(0,0,cwidth,cheight);
-	var i;
+	let i;
+	
 	for (i=0;i<everything.length;i++) {
-		var ob = everything[i];
+		let ob = everything[i];
+		console.log(ob[1])
 		if (ob[1]) {  //need to translate and rotate
 			ctx.save();
 			ctx.translate(ob[3],ob[4]);
@@ -144,15 +138,33 @@ function drawall() {
 	}
 }
 
+function fire() {
+  
+  let angle = Number(document.f.ang.value);
+  let outofcannon = Number(document.f.vo.value);
+  let angleradians = angle*Math.PI/180;
+  horvelocity =  outofcannon*Math.cos(angleradians);
+  verticalvel1 = - outofcannon*Math.sin(angleradians);
+  everything[cannonindex][2]= - angleradians;
+  cball.sx = cannonx + cannonlength*Math.cos(angleradians);
+  cball.sy = cannony+cannonht*.5 - cannonlength*Math.sin(angleradians);
+	drawall();
+	tid = setInterval(change,100);
+	return false;
+}
+
+
+
 function change() {
-	var dx = horvelocity;
+	let dx = horvelocity;
 	verticalvel2 = verticalvel1 + gravity;
-	var dy = (verticalvel1 + verticalvel2)*.5;
+	let dy = (verticalvel1 + verticalvel2)*.5;
 	verticalvel1 = verticalvel2;
 	cball.moveit(dx,dy);
+	
 	//check for hitting target
-	var bx = cball.sx;
-	var by = cball.sy;
+	let bx = cball.sx;
+	let by = cball.sy;
 	if ((bx>=target.sx)&&(bx<=(target.sx+target.swidth))&&
 	(by>=target.sy)&&(by<=(target.sy+target.sheight))) {
 		clearInterval(tid);
