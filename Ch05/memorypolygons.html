@@ -14,26 +14,26 @@
 	}
 	</style>
     <script type="text/javascript">
-	var cwidth = 900;
-	var cheight = 400;
-	var ctx;
-	var firstpick = true;
-	var firstcard;
-	var secondcard;
-	var backcolor = "rgb(128,0,128)";
-	var frontbgcolor = "rgb(251,215,73)"; 
-	var polycolor = "rgb(254,11,0)";
-	var tablecolor = "rgb(255,255,255)";
-	var cardrad = 30;
-	var deck = [];
-	var firstsx = 30;
-	var firstsy = 50;
-	var margin = 30;
-	var cardwidth = 4*cardrad;
-	var cardheight = 4*cardrad;
-	var tid;
-	var matched;
-	var starttime;
+	let cwidth = 900;
+	let cheight = 400;
+	let ctx;
+	let firstpick = true;
+	let firstcard;
+	let secondcard;
+	let backcolor = "rgb(128,0,128)";
+	let frontbgcolor = "rgb(251,215,73)"; 
+	let polycolor = "rgb(254,11,0)";
+	let tablecolor = "rgb(255,255,255)";
+	let cardrad = 30;
+	let deck = [];
+	let firstsx = 30;
+	let firstsy = 50;
+	let margin = 30;
+	let cardwidth = 4*cardrad;
+	let cardheight = 4*cardrad;
+	let tid;
+	let matched;
+	let starttime;
 	
 //deck holds info on the cards: the location and dimensions and identifying info
 //identifying (matching) info in this case is the number of sides for the poly
@@ -49,11 +49,11 @@ function Card(sx,sy,swidth,sheight,info) {
 
 //generate deck of cards 6 pairs of polygons
 function makedeck() {
-	var i;
-	var acard;
-	var bcard;
-	var cx = firstsx;
-	var cy = firstsy;
+	let i;
+	let acard;
+	let bcard;
+	let cx = firstsx;
+	let cy = firstsy;
 	for(i=3;i<9;i++) {
 		acard = new Card(cx,cy,cardwidth,cardheight,i);
 		deck.push(acard);
@@ -68,11 +68,11 @@ function makedeck() {
 
 function shuffle() {
 //coded to resemble how I shuffled cards when playing concentration
-var i;
-var k;
-var holder;
-var dl = deck.length
-var nt;
+let i;
+let k;
+let holder;
+let dl = deck.length
+let nt;
 	for (nt=0;nt<3*dl;nt++) {  //do the swap 3 times deck.length times
 	  i = Math.floor(Math.random()*dl);
 	  k = Math.floor(Math.random()*dl);
@@ -101,8 +101,8 @@ function drawpoly() {
 	ctx.fillRect(this.sx-2*this.rad,this.sy-2*this.rad,4*this.rad,4*this.rad);
 	ctx.beginPath();
 	ctx.fillStyle=polycolor;
-	var i;
-	var rad = this.rad;
+	let i;
+	let rad = this.rad;
 	ctx.beginPath();
 	ctx.moveTo(this.sx+rad*Math.cos(-.5*this.angle),this.sy+rad*Math.sin(-.5*this.angle));
 	for (i=1;i<this.n;i++) {
@@ -117,23 +117,17 @@ function generalmove(dx,dy) {
 }
 
 
-
-
-
-
 function drawback() {
 	ctx.fillStyle = backcolor;
 	ctx.fillRect(this.sx,this.sy,this.swidth,this.sheight);	
 }
 
 
-
-
 function choose(ev) {
-	var mx;
-	var my;
-	var pick1;
-	var pick2;
+	let mx;
+	let my;
+	let pick1;
+	let pick2;
 	if ( ev.layerX ||  ev.layerX == 0) { // Firefox
    			mx= ev.layerX;
     		my = ev.layerY;
@@ -141,9 +135,10 @@ function choose(ev) {
     		mx = ev.offsetX;
     		my = ev.offsetY;
   		}
-	var i;
+	let i;
+	let card;
 	for (i=0;i<deck.length;i++){
-		var card = deck[i];
+		card = deck[i];
 		if (card.sx >=0)  //this is the way to avoid checking for clicking on this space
 		if ((mx>card.sx)&&(mx<card.sx+card.swidth)&&(my>card.sy)&&(my<card.sy+card.sheight)) {
 			//check that this isn't clicking on first card
@@ -165,13 +160,13 @@ function choose(ev) {
 		  	if (deck[i].info==deck[firstcard].info) {
 				matched = true;
 				
-				var nm = 1+Number(document.f.count.value);
+				let nm = 1+Number(document.f.count.value);
 				document.f.count.value = String(nm);
 				if (nm>= .5*deck.length) {
-					var now = new Date();
-					var nt = Number(now.getTime());
+					let now = new Date();
+					let nt = Number(now.getTime());
 					
-					var seconds = Math.floor(.5+(nt-starttime)/1000); 
+					let seconds = Math.floor(.5+(nt-starttime)/1000); 
 					
 					
 					document.f.elapsed.value = String(seconds);
@@ -188,7 +183,7 @@ function choose(ev) {
 }
 
 function flipback() {
-	var card;
+	let card;
 	if (!matched) {
 	deck[firstcard].draw();
 	deck[secondcard].draw();
@@ -213,9 +208,6 @@ function init(){
    starttime = Number(starttime.getTime());
    shuffle();
 } 
-
-
-
 
 
 </script>

@@ -14,25 +14,25 @@
 	}
 	</style>
     <script type="text/javascript">
-	var cwidth = 900;
-	var cheight = 400;
-	var ctx;
-	var firstpick = true;
-	var firstcard = -1;
-	var secondcard;
-	var backcolor = "rgb(128,0,128)";
-	var tablecolor = "rgb(255,255,255)";
-	var deck = [];
-	var firstsx = 30;
-	var firstsy = 50;
-	var margin = 30;
-	var cardwidth = 100;
-	var cardheight = 100;
-	var tid;
-	var matched;
-	var starttime;
-	var count = 0;
-	var pairs = [
+	let cwidth = 900;
+	let cheight = 400;
+	let ctx;
+	let firstpick = true;
+	let firstcard = -1;
+	let secondcard;
+	let backcolor = "rgb(128,0,128)";
+	let tablecolor = "rgb(255,255,255)";
+	let deck = [];
+	let firstsx = 30;
+	let firstsy = 50;
+	let margin = 30;
+	let cardwidth = 100;
+	let cardheight = 100;
+	let tid;
+	let matched;
+	let starttime;
+	let count = 0;
+	let pairs = [
 		["anneGorge.jpg","anneNow.jpg"],
 	   [ "esther.jpg","pigtailEsther.jpg"],
 	  ["pigtailJeanine.jpg","jeanineGorge.jpg"],
@@ -56,13 +56,13 @@ function Card(sx,sy,swidth,sheight, img, info) {
 
 //generate deck of cards 6 pairs of polygons
 function makedeck() {
-	var i;
-	var acard;
-	var bcard;
-	var pica;
-	var picb;
-	var cx = firstsx;
-	var cy = firstsy;
+	let i;
+	let acard;
+	let bcard;
+	let pica;
+	let picb;
+	let cx = firstsx;
+	let cy = firstsy;
 	for(i=0;i<pairs.length;i++) {
 		pica = new Image();
 		pica.src = pairs[i][0];
@@ -83,12 +83,12 @@ function makedeck() {
 function shuffle() {
 //coded to resemble how I shuffled cards when playing concentration
 //swaps the changing information: the img and the info indicating the matching
-var i;
-var k;
-var holderinfo;
-var holderimg;
-var dl = deck.length
-var nt;
+let i;
+let k;
+let holderinfo;
+let holderimg;
+let dl = deck.length
+let nt;
 	for (nt=0;nt<3*dl;nt++) {  //do the swap 3 times deck.length times
 	  i = Math.floor(Math.random()*dl);
 	  k = Math.floor(Math.random()*dl);
@@ -109,11 +109,11 @@ function drawback() {
 
 
 function choose(ev) {
-	var out;
-	var mx;
-	var my;
-	var pick1;
-	var pick2;
+	let out;
+	let mx;
+	let my;
+	let pick1;
+	let pick2;
 	if ( ev.layerX ||  ev.layerX == 0) { // Firefox
    			mx= ev.layerX;
     		my = ev.layerY;
@@ -121,9 +121,9 @@ function choose(ev) {
     		mx = ev.offsetX;
     		my = ev.offsetY;
   		}
-	var i;
+	let i;
 	for (i=0;i<deck.length;i++){
-		var card = deck[i];
+		let card = deck[i];
 		if (card.sx >=0)  //this is the way to avoid checking for clicking on this space
 		if ((mx>card.sx)&&(mx<card.sx+card.swidth)&&(my>card.sy)&&(my<card.sy+card.sheight)) {
 			//check that this isn't clicking on first card
@@ -148,9 +148,9 @@ function choose(ev) {
 				ctx.fillStyle=backcolor;
 				ctx.fillText("Number of matches so far: "+String(count),10,360);
 				if (count>= .5*deck.length) {
-					var now = new Date();
-					var nt = Number(now.getTime());
-					var seconds = Math.floor(.5+(nt-starttime)/1000); 
+					let now = new Date();
+					let nt = Number(now.getTime());
+					let seconds = Math.floor(.5+(nt-starttime)/1000); 
 					ctx.fillStyle= tablecolor;
 					ctx.fillRect(0,0,900,400);
 					ctx.fillStyle=backcolor;
@@ -171,7 +171,7 @@ function choose(ev) {
 }
 
 function flipback() {
-	var card;
+	let card;
 	if (!matched) {
 	deck[firstcard].draw();
 	deck[secondcard].draw();

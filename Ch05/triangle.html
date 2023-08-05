@@ -2,16 +2,17 @@
 <head>
     <title>Triangle</title>
     <script type="text/javascript">
-        var ctx;
-        var rad = 50;
-        var centerX = 200;
-        var centerY = 200;
-        var n = 3;
-        var angle = (2*Math.PI)/n;
+        let ctx;
+        let rad = 50;
+        let centerX = 60;
+        let centerY = 60;
+        let n = 9;
+        let angle = (2*Math.PI)/n;
+
         function init(){
             ctx = document.getElementById('canvas').getContext('2d');
             ctx.fillStyle="rgb(255,0,0)";
-            var i;
+            let i;
             ctx.beginPath();
             ctx.moveTo(centerX+rad*Math.cos(-.5*angle),centerY+rad*Math.sin(-.5*angle));
             for (i=1;i<n;i++) {
@@ -27,4 +28,4 @@
     Your browser doesn't support the HTML5 element canvas.
 </canvas>
 </body>
-</html>
+</html>HABLALO
