@@ -2,16 +2,19 @@
 <head>
     <title>Build maze and test travel</title>
     <script type="text/javascript">
-	var cwidth = 900;
-	var cheight = 700;
-	var ctx;
-	var everything = [];
-	var curwall;
-	var wallwidth = 5;
-	var wallstyle = "rgb(200,0,200)";
-	var walls = [];
-	var inmotion = false;
-	var unit = 10;
+
+	let cwidth = 900;
+	let cheight = 700;
+	let ctx;
+	let everything = [];
+	let curwall;
+	let wallwidth = 5;
+	let wallstyle = "rgb(200,0,200)";
+	let walls = [];
+	let inmotion = false;
+	let unit = 10;
+
+
 function Token(sx,sy,rad,stylestring,n) {
   this.sx = sx;
   this.sy = sy;
@@ -22,11 +25,13 @@ function Token(sx,sy,rad,stylestring,n) {
   this.moveit = movetoken;
   this.fillstyle = stylestring;
 }
+
+
 function drawtoken() {
 	ctx.fillStyle=this.fillstyle;
 	ctx.beginPath();
-	var i;
-	var rad = this.rad;
+	let i;
+	let rad = this.rad;
 	ctx.beginPath();
 	ctx.moveTo(this.sx+rad*Math.cos(-.5*this.angle),this.sy+rad*Math.sin(-.5*this.angle));
 	for (i=1;i<this.n;i++) {
@@ -34,11 +39,13 @@ function drawtoken() {
 	}
 	ctx.fill();	
 }
+
+
 function movetoken(dx,dy) {
 	this.sx +=dx;
 	this.sy +=dy;
-	var i;
-	var wall; 
+	let i;
+	let wall; 
 	for(i=0;i<walls.length;i++) {
          wall = walls[i];
 		if (intersect(wall.sx,wall.sy,wall.fx,wall.fy,this.sx,this.sy,this.rad)) {
@@ -48,6 +55,8 @@ function movetoken(dx,dy) {
 		}
 	}
 }
+
+
 function Wall(sx,sy,fx,fy,width,stylestring) {
 	this.sx = sx;
 	this.sy = sy;
@@ -57,6 +66,8 @@ function Wall(sx,sy,fx,fy,width,stylestring) {
 	this.draw = drawAline;
 	this.strokestyle = stylestring;
 }
+
+
 function drawAline() {
 	ctx.lineWidth = this.width;
 	ctx.strokeStyle = this.strokestyle;
@@ -65,8 +76,12 @@ function drawAline() {
 	ctx.lineTo(this.fx,this.fy);
 	ctx.stroke();	
 }
-var mypent = new Token(100,100,20,"rgb(0,0,250)",5);
+
+
+let mypent = new Token(100,100,20,"rgb(0,0,250)",5);
 everything.push(mypent);
+
+
 function init(){
    ctx = document.getElementById('canvas').getContext('2d'); 
    canvas1 = document.getElementById('canvas');
@@ -76,9 +91,10 @@ function init(){
    window.addEventListener('keydown',getkeyAndMove,false);
    drawall();  
 } 
+
 function startwall(ev) {
-	 var mx;
-	var my;
+	 let mx;
+	let my;
 	if ( ev.layerX ||  ev.layerX == 0) {
    			mx= ev.layerX;
     		my = ev.layerY;
@@ -91,10 +107,12 @@ function startwall(ev) {
 	everything.push(curwall);
 	drawall();
 }
+
+
 function stretchwall(ev) {
 	if (inmotion) {
-	 var mx;
-	var my;
+	 let mx;
+	let my;
 	if ( ev.layerX ||  ev.layerX == 0) { // Firefox
    			mx= ev.layerX;
     		my = ev.layerY;
@@ -107,19 +125,25 @@ function stretchwall(ev) {
 	 drawall();
 	}
 }
+
+
 function finish(ev) {
 	inmotion = false;
 	walls.push(curwall);
 }
+
+
 function drawall() {
 	ctx.clearRect(0,0,cwidth,cheight);
-	var i;
+	let i;
 	for (i=0;i<everything.length;i++) {
 		everything[i].draw();
 	}
 }
+
+
 function getkeyAndMove(event) {
-  var keyCode; 
+  let keyCode; 
   if(event == null)
   {
     keyCode = window.event.keyCode; 
@@ -149,11 +173,13 @@ function getkeyAndMove(event) {
  	 }
   drawall();
  }
+
+
  function intersect(sx,sy,fx,fy,cx,cy,rad) {
-   var dx;
-   var dy;
-   var t;
-   var rt;
+   let dx;
+   let dy;
+   let t;
+   let rt;
 //parameterizing the line segment, with t going from 0.0 to 1.0
 //and then writing the distance squared from each point to cx,cy
 //determine the minimum by taking the derivative and solving for t
@@ -179,16 +205,18 @@ if (rt<(rad*rad)) {
 else {
       return false;}
 }
+
+
 //note saving locally does not work in Firefox on local computer
 function savewalls() {
 	//only save start and finish pairs
 	//need to convert it to long string.
-	var w = [];
-	var allw=[];
-	var sw;
-	var onewall;
-	var i;
-	var lsname = document.sf.slname.value;
+	let w = [];
+	let allw=[];
+	let sw;
+	let onewall;
+	let i;
+	let lsname = document.sf.slname.value;
 	for (i=0;i<walls.length;i++) {
 		w.push(walls[i].sx);
 		w.push(walls[i].sy);
@@ -209,16 +237,18 @@ function savewalls() {
 	      }
 	return false;
 }
+
+
 function getwalls() {
-	var swalls;
-	var sw;
-	var i;
-	var sx;
-	var sy;
-	var fx;
-	var fy;
-	var curwall;
-	var lsname = document.gf.glname.value;
+	let swalls;
+	let sw;
+	let i;
+	let sx;
+	let sy;
+	let fx;
+	let fy;
+	let curwall;
+	let lsname = document.gf.glname.value;
 	swalls=localStorage.getItem(lsname);
 	if (swalls!=null) {
 	wallstgs = swalls.split(";");
@@ -241,6 +271,7 @@ function getwalls() {
 	window.addEventListener('keydown',getkeyAndMove,false);
 	return false;
 }
+
 
 </script>
 </head>

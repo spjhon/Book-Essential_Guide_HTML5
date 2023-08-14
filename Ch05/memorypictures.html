@@ -54,7 +54,7 @@ function Card(sx,sy,swidth,sheight, img, info) {
 	this.draw = drawback;
 }
 
-//generate deck of cards 6 pairs of polygons
+//generate deck of cards 6 pairs of photos
 function makedeck() {
 	let i;
 	let acard;
@@ -122,8 +122,9 @@ function choose(ev) {
     		my = ev.offsetY;
   		}
 	let i;
+	let car;
 	for (i=0;i<deck.length;i++){
-		let card = deck[i];
+		card = deck[i];
 		if (card.sx >=0)  //this is the way to avoid checking for clicking on this space
 		if ((mx>card.sx)&&(mx<card.sx+card.swidth)&&(my>card.sy)&&(my<card.sy+card.sheight)) {
 			//check that this isn't clicking on first card

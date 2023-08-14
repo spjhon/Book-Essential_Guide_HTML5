@@ -45,6 +45,7 @@ function Card(sx,sy,swidth,sheight,info) {
 	this.sheight = sheight;
 	this.info = info;
 	this.draw = drawback;
+	
 }
 
 //generate deck of cards 6 pairs of polygons
@@ -54,7 +55,7 @@ function makedeck() {
 	let bcard;
 	let cx = firstsx;
 	let cy = firstsy;
-	for(i=3;i<9;i++) {
+	for(i=3;i<9;i++) { //Goes from 3 because is the number of sides of the polygon
 		acard = new Card(cx,cy,cardwidth,cardheight,i);
 		deck.push(acard);
 		bcard = new Card(cx,cy+cardheight+margin,cardwidth,cardheight,i);
@@ -63,7 +64,7 @@ function makedeck() {
 		acard.draw();
 		bcard.draw();
 	}
-
+	
 }
 
 function shuffle() {
@@ -73,13 +74,16 @@ let k;
 let holder;
 let dl = deck.length
 let nt;
-	for (nt=0;nt<3*dl;nt++) {  //do the swap 3 times deck.length times
-	  i = Math.floor(Math.random()*dl);
-	  k = Math.floor(Math.random()*dl);
-	  holder = deck[i].info;
-	  deck[i].info = deck[k].info;
-	  deck[k].info = holder;
-	}
+
+for (nt=0;nt<12;nt++) {
+	i = Math.floor(Math.random()*dl);
+	k = Math.floor(Math.random()*dl);
+	holder = deck[i].info;
+	deck[i].info = deck[k].info;
+	deck[k].info = holder;
+}
+
+
 }
 
 //Polycard will produce the card face. Backcard will produce the common back
@@ -91,8 +95,6 @@ function Polycard(sx,sy,rad,n) {
   this.draw = drawpoly;
   this.n = n;
   this.angle = (2*Math.PI)/n  //parens may not be needed.
-  this.moveit = generalmove;
-  
 }
 
 function drawpoly() {
@@ -111,11 +113,6 @@ function drawpoly() {
 	ctx.fill();	
 }
 
-function generalmove(dx,dy) {
-	this.sx +=dx;
-	this.sy +=dy;
-}
-
 
 function drawback() {
 	ctx.fillStyle = backcolor;
@@ -128,13 +125,10 @@ function choose(ev) {
 	let my;
 	let pick1;
 	let pick2;
-	if ( ev.layerX ||  ev.layerX == 0) { // Firefox
-   			mx= ev.layerX;
-    		my = ev.layerY;
-  		} else if (ev.offsetX || ev.offsetX == 0) { // Opera
-    		mx = ev.offsetX;
-    		my = ev.offsetY;
-  		}
+	
+	mx = ev.x;
+    my = ev.y;
+	
 	let i;
 	let card;
 	for (i=0;i<deck.length;i++){
@@ -177,6 +171,7 @@ function choose(ev) {
 				matched = false;
 			}
 			firstpick = true;
+			canvas1.removeEventListener('click',choose);
 			tid = setTimeout(flipback,1000);
 		}
 	}
@@ -195,12 +190,14 @@ function flipback() {
 				deck[secondcard].sx = -1;
 				deck[firstcard].sx = -1;
 	}
+	canvas1.addEventListener('click',choose,false);
 }
 
 function init(){
    ctx = document.getElementById('canvas').getContext('2d'); 
    canvas1 = document.getElementById('canvas');
    canvas1.addEventListener('click',choose,false);
+   
    makedeck();
    document.f.count.value = "0";
    document.f.elapsed.value = "";
